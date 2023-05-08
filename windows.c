@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <time.h>
+#include <sysinfoapi.h>
 #include <stdbool.h>
 #include <math.h>
 
@@ -21,6 +21,11 @@ double direct_suite(uint32_t a);
 // arg 1 = a. : un entier.
 // compiler avec gcc -O3 -lm
 int main(int argc, char** argv) {
+  //Scanner les arguments.  
+  int a;
+  sscanf(argv[1], "%d", &a);
+  // Vérifuer resolution:
+  printf("a(%d) = %.4e\n", a, direct_suite(a));
   //Netoyer le cache.
   for (int i = 0; i < 100; i++) {
     CACHE[i].calc = false;
@@ -34,17 +39,14 @@ int main(int argc, char** argv) {
     CACHE[i].r = CONST_POW[i];
   }
 
-  int a;
-  sscanf(argv[1], "%d", &a);
-
-  clock_t start, end;
+  long long int start, end;
   double time_spent;
-  start = clock();
+  start = GetTickCount64();
   double res = recurse_suite(a);
-  end = clock();
-  time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+  end = GetTickCount64();
+  time_spent = (end-start) * 1e3;
   printf("Result: %.4e\n", res);
-  printf("Time spent: %f µs\n", time_spent*1000000);
+  printf("Time spent: %f µs\n", time_spent);
   return 0;
 }
 
@@ -70,9 +72,9 @@ double recurse_suite(uint32_t a) {
 }
 
 double direct_suite(uint32_t a) {
-  return (740/149.0)*pow(-1, a) +
+  return (-740/149.0)*pow(-1, a) +
     (-7814/149.0)*pow(-4, a) + 
-    (12631/149.0)*pow(-5, a) +
+    (1063/149.0)*pow(-5, a) +
     (-4106/149.0)*pow(-6, a) +
-    (-110/149.0) *pow(-9, a);
+    (-120/149.0) *pow(-9, a);
 }
