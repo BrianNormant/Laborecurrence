@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <stdbool.h>
+#include <math.h>
 
 typedef struct {
   bool calc;
@@ -12,15 +13,16 @@ typedef struct {
 /**
  * Cacher les calculs precedants pour optimiser.
 **/
-Node CACHE[10000];
+Node CACHE[100];
 double recurse_suite(uint32_t a);
 double direct_suite(uint32_t a);
 
 // Asumer que les arguments sont valide:
 // arg 1 = a. : un entier.
+// compiler avec gcc -O3 -lm
 int main(int argc, char** argv) {
   //Netoyer le cache.
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < 100; i++) {
     CACHE[i].calc = false;
     CACHE[i].r = 0.0;
   }
@@ -65,4 +67,12 @@ double recurse_suite(uint32_t a) {
     CACHE[a].r = result;
     return result;
   }
+}
+
+double direct_suite(uint32_t a) {
+  return (740/149.0)*pow(-1, a) +
+    (-7814/149.0)*pow(-4, a) + 
+    (12631/149.0)*pow(-5, a) +
+    (-4106/149.0)*pow(-6, a) +
+    (-110/149.0) *pow(-9, a);
 }
