@@ -9,10 +9,13 @@ typedef struct {
   double r;
 } Node;
 
+double recurse_suite(uint32_t a);
+
 /**
  * Cacher les calculs precedants pour optimiser.
 **/
-Node CACHE[100];
+
+static Node CACHE[100];
 
 void clean_cache() {
   //Netoyer le cache.
@@ -22,7 +25,7 @@ void clean_cache() {
   }
 
   // Definition des valeurs de depart
-  const double CONST_POW[] = {-1, 28, -240, 1948, -16080};
+const double CONST_POW[] = {-1, 28, -240, 1948, -16080};
   for (int i = 0; i < 5; i++) {
     CACHE[i].calc = true;
     CACHE[i].r = CONST_POW[i];
