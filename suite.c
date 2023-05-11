@@ -40,35 +40,35 @@ void clean_cache() {
 
 const double CONST_FACT[] = {-25, -233, -995, -1866, -1080};
 
-double recurse_suite(uint32_t n) {
-  for (int i = 5; i <= n; i++) {
-    previous[i] = CONST_FACT[i - 1] * previous[i-1];
-    previous[i] += CONST_FACT[i - 2] * previous[i-2];
-    previous[i] += CONST_FACT[i - 3] * previous[i-3];
-    previous[i] += CONST_FACT[i - 4] * previous[i-4];
-    previous[i] += CONST_FACT[i - 5] * previous[i-5];
-  }
-  return previous[n];
-}
-
-// double recurse_suite(uint32_t a) {
-//   if (CACHE[a].calc) return CACHE[a].r;
-//   else {
-//     double n;
-//     double result = 0.0;
-//     for (int i = 0; i < 5; i++) {
-//       if (CACHE[a-i-1].calc)
-//         n = CACHE[a-i-1].r;
-//       else
-//         n = recurse_suite(a-i-1);
-//       n *= CONST_FACT[i];
-//       result += n;
-//     }
-//     CACHE[a].calc = true;
-//     CACHE[a].r = result;
-//     return result;
+// double recurse_suite(uint32_t n) {
+//   for (int i = 5; i <= n; i++) {
+//     previous[i] = CONST_FACT[i - 1] * previous[i-1];
+//     previous[i] += CONST_FACT[i - 2] * previous[i-2];
+//     previous[i] += CONST_FACT[i - 3] * previous[i-3];
+//     previous[i] += CONST_FACT[i - 4] * previous[i-4];
+//     previous[i] += CONST_FACT[i - 5] * previous[i-5];
 //   }
+//   return previous[n];
 // }
+
+double recurse_suite(uint32_t a) {
+  if (CACHE[a].calc) return CACHE[a].r;
+  else {
+    double n;
+    double result = 0.0;
+    for (int i = 0; i < 5; i++) {
+      if (CACHE[a-i-1].calc)
+        n = CACHE[a-i-1].r;
+      else
+        n = recurse_suite(a-i-1);
+      n *= CONST_FACT[i];
+      result += n;
+    }
+    CACHE[a].calc = true;
+    CACHE[a].r = result;
+    return result;
+  }
+}
 
 double direct_suite(uint32_t a) {
   return (-740/149.0)*pow(-1, a) +

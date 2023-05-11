@@ -20,7 +20,12 @@ int main(int argc, char** argv) {
   // Vérifuer resolution:
   // printf("a(%d) = %.4e\n", a, direct_suite(a));
   
-  const int NB_TESTS = 1000000;
+  int NB_TESTS;
+  if (argc == 3) {
+    sscanf(argv[2], "%d", &NB_TESTS);
+  } else {
+    NB_TESTS = 10000;
+  }
   double res;
   long double min_time = 10;
   for (int i = 0; i < NB_TESTS; ++i) {
@@ -34,9 +39,10 @@ int main(int argc, char** argv) {
     }
   }
   
-  if (argc >= 3) {
+  if (argc >= 4) {
     printf("%Lf\n", min_time);
   } else {
+    printf("Time runned: %d\n", NB_TESTS);
     printf("Result: %.4e\n", res);
     printf("Time spent: %Lf µs\n", min_time);
   }
