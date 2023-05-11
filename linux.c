@@ -20,23 +20,25 @@ int main(int argc, char** argv) {
   // Vérifuer resolution:
   // printf("a(%d) = %.4e\n", a, direct_suite(a));
   
-  const int NB_TESTS = 1;
+  const int NB_TESTS = 1000000;
   double res;
-  long double time_spent = 0.0;
+  long double min_time = 10;
   for (int i = 0; i < NB_TESTS; ++i) {
     struct timespec start, end;
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     res = recurse_suite(a);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
-    time_spent += (end.tv_sec - start.tv_sec)*1e6 + (end.tv_nsec - start.tv_nsec)*1e-3;
+    double time_spent = (end.tv_sec - start.tv_sec)*1e6 + (end.tv_nsec - start.tv_nsec)*1e-3;
+    if (time_spent < min_time) {
+      min_time = time_spent;
+    }
   }
-  time_spent = time_spent / NB_TESTS;
   
   if (argc >= 3) {
-    printf("%Lf\n", time_spent);
+    printf("%Lf\n", min_time);
   } else {
     printf("Result: %.4e\n", res);
-    printf("Time spent: %Lf µs\n", time_spent);
+    printf("Time spent: %Lf µs\n", min_time);
   }
 
   return 0;
